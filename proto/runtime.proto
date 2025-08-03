@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package cri;
+package cri.v1;
 
-option go_package = "cri/";
+option go_package = "cri/v1";
 
 service RuntimeService {
   rpc RunCode(RunCodeRequest) returns (RunCodeResponse);
@@ -14,5 +14,6 @@ message RunCodeRequest {
 }
 
 message RunCodeResponse {
-  string logs = 2;
+  string logs = 1;
+  string err = 2;
 }

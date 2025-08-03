@@ -2,9 +2,9 @@ syntax = "proto3";
 
 import "google/api/annotations.proto";
 
-package cri;
+package cri.v1;
 
-option go_package = "cri/";
+option go_package = "cri/v1";
 
 
 
@@ -23,5 +23,6 @@ message InvocationRequest {
 }
 
 message InvocationResponse {
-  string logs = 2;
+  string logs = 1;
+  string err = 2;
 }
