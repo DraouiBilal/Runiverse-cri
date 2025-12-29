@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package cri.v1;
+
+option go_package = "cri/v1";
+
+service GitService {
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Fetch(FetchRequest) returns (stream FetchResponse);
+  rpc Push(stream PushRequest) returns (PushResponse);
+}
+
+// List
+message ListRequest {
+  string repo_path = 1;
+  bool for_push = 2;
+}
+
+message ListResponse {
+  string refs = 1;
+  string err = 2;
+}
+
+// Fetch
+message FetchRequest {
+  string repo_path = 1;
+  repeated string wants = 2;
+  repeated string haves = 3;
+}
+
+message FetchResponse {
+  bytes packfile_chunk = 1;
+  string err = 2;
+}
+
+// Push
+message PushRequest {
+  oneof payload {
+    PushMetadata metadata = 1;
+    bytes packfile_chunk = 2;
+  }
+}
+
+message PushMetadata {
+  string repo_path = 1;
+  repeated RefUpdate ref_updates = 2;
+}
+
+message RefUpdate {
+  string ref_name = 1;
+  string old_hash = 2;
+  string new_hash = 3;
+}
+
+message PushResponse {
+  string status = 1;
+  string err = 2;
+}
+
